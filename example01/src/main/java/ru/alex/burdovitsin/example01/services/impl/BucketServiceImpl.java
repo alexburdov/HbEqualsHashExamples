@@ -11,10 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.*;
 
 @Slf4j
 @Service
 public class BucketServiceImpl implements BucketService {
+
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
     private final BucketRepository bucketRepository;
 
@@ -50,10 +53,17 @@ public class BucketServiceImpl implements BucketService {
         List<BucketDto> result = new ArrayList<>();
         Iterable<Bucket> buckets = bucketRepository.findAll();
         for (Bucket bucket : buckets) {
-            bucket.setHashNow(bucket.getHash());
-            result.add(new BucketDto(bucket));
-            bucket.setTitle(UUID.randomUUID().toString());
-            bucketRepository.save(bucket);
+            try {
+                Future<Bucket> future = EXECUTOR_SERVICE.submit(() -> {
+                    bucket.setHashNow(bucket.getHash());
+                    bucket.setTitle(UUID.randomUUID().toString());
+                    bucketRepository.save(bucket);
+                    return bucket;
+                });
+                result.add(new BucketDto(future.get()));
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
         }
         return result;
     }
