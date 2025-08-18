@@ -55,12 +55,6 @@
         </dependencies>
     </dependencyManagement>
 
-
-    <modules>
-        <module>example00</module>
-        <module>example01</module>
-    </modules>
-
     <build>
         <plugins>
             <plugin>
@@ -92,4 +86,9 @@
         </plugins>
     </build>
 
+    <modules>
+        <module>example00</module>
+        <module>example01</module>
+        <module>example02</module>
+    </modules>
 </project>

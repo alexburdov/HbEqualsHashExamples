@@ -55,9 +55,11 @@ public class BucketServiceImpl implements BucketService {
         for (Bucket bucket : buckets) {
             try {
                 Future<Bucket> future = EXECUTOR_SERVICE.submit(() -> {
-                    bucket.setHashNow(bucket.getHash());
+                    //bucket.setHashNow(bucket.getHash());
                     bucket.setTitle(UUID.randomUUID().toString());
                     bucketRepository.save(bucket);
+                    bucket.setId(bucket.getId() + 100);
+                    bucket.setHashNow(bucket.getHash());
                     return bucket;
                 });
                 result.add(new BucketDto(future.get()));
