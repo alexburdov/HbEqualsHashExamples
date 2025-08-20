@@ -10,16 +10,16 @@ import java.util.UUID;
 @Setter
 public class BucketDto {
 
-    private Long id;
+    private Long bucketId;
     private String title;
 
     public BucketDto(Bucket bucket) {
-        this.id = bucket.getId();
+        this.bucketId = bucket.getId();
         this.title = bucket.getTitle();
     }
 
     public BucketDto() {
-        this.id = null;
+        this.bucketId = null;
         this.title = UUID.randomUUID().toString();
     }
 }

@@ -20,7 +20,7 @@ public class Bucket {
     }
 
     public Bucket(BucketDto bucketDto) {
-        this.id = bucketDto.getId();
+        this.id = bucketDto.getBucketId();
         this.title = bucketDto.getTitle();
     }
 }
